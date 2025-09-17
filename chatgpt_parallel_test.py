@@ -16,13 +16,13 @@ class ChatGPTMetrics:
 
     def start_job(self):
         self.start_time = time.time()
-        print(f"🚀 Job started at {time.strftime('%H:%M:%S')}")
+        print(f"Job started at {time.strftime('%H:%M:%S')}")
 
     def end_job(self):
         self.end_time = time.time()
         duration = self.get_total_duration()
-        print(f"✅ Job completed at {time.strftime('%H:%M:%S')}")
-        print(f"⏱️  Total duration: {duration:.1f} seconds ({duration / 60:.1f} minutes)")
+        print(f"Job completed at {time.strftime('%H:%M:%S')}")
+        print(f"Total duration: {duration:.1f} seconds ({duration / 60:.1f} minutes)")
 
     def get_total_duration(self) -> float:
         if self.start_time and self.end_time:
@@ -59,19 +59,19 @@ class ChatGPTMetrics:
         failed_questions = sum(stats['failed'] for stats in self.worker_stats.values())
 
         print(f"\n{'=' * 50}")
-        print(f"📊 DETAILED PERFORMANCE METRICS")
+        print(f"DETAILED PERFORMANCE METRICS")
         print(f"{'=' * 50}")
-        print(f"📝 Total Questions: {total_questions}")
-        print(f"✅ Successful: {successful_questions}")
-        print(f"❌ Failed: {failed_questions}")
-        print(f"📈 Success Rate: {(successful_questions / total_questions) * 100:.1f}%")
-        print(f"⏱️  Total Time: {total_duration:.1f}s ({total_duration / 60:.1f}m)")
-        print(f"⚡ Questions/Second: {total_questions / total_duration:.2f}")
-        print(f"📊 Avg Time/Question: {sum(self.question_times) / len(self.question_times):.1f}s")
-        print(f"🔥 Fastest Question: {min(self.question_times):.1f}s")
-        print(f"🐌 Slowest Question: {max(self.question_times):.1f}s")
+        print(f"Total Questions: {total_questions}")
+        print(f"Successful: {successful_questions}")
+        print(f"Failed: {failed_questions}")
+        print(f"Success Rate: {(successful_questions / total_questions) * 100:.1f}%")
+        print(f"Total Time: {total_duration:.1f}s ({total_duration / 60:.1f}m)")
+        print(f"Questions/Second: {total_questions / total_duration:.2f}")
+        print(f"Avg Time/Question: {sum(self.question_times) / len(self.question_times):.1f}s")
+        print(f"Fastest Question: {min(self.question_times):.1f}s")
+        print(f"Slowest Question: {max(self.question_times):.1f}s")
 
-        print(f"\n👥 WORKER BREAKDOWN:")
+        print(f"\nWORKER BREAKDOWN:")
         for worker_id, stats in self.worker_stats.items():
             avg_time = stats['total_time'] / stats['questions'] if stats['questions'] > 0 else 0
             print(f"   Worker {worker_id}: {stats['questions']} questions, "
@@ -301,15 +301,15 @@ async def scrape_chatgpt_auto_workers(questions: List[str], target_seconds: int,
         avg_time_per_question
     )
 
-    print(f"🎯 TARGET: Complete {len(questions)} questions in {target_seconds} seconds")
-    print(f"📊 WORKER CALCULATION:")
+    print(f"TARGET: Complete {len(questions)} questions in {target_seconds} seconds")
+    print(f"WORKER CALCULATION:")
     print(f"   • Time constraint needs: {worker_calc['time_constraint_workers']} workers")
     print(f"   • Login constraint needs: {worker_calc['login_constraint_workers']} workers")
     print(f"   • Limiting factor: {worker_calc['limiting_factor']}")
     print(f"   • Optimal workers: {worker_calc['optimal_workers']}")
     print(f"   • Questions per worker: {worker_calc['questions_per_worker']}")
     print(f"   • Estimated time: {worker_calc['estimated_time']:.1f} seconds")
-    print(f"   • Will meet target: {'✅ YES' if worker_calc['will_meet_target'] else '❌ NO'}")
+    print(f"   • Will meet target: {'YES' if worker_calc['will_meet_target'] else 'NO'}")
 
     # Run the scraping with calculated workers
     results = await scrape_chatgpt_parallel(questions, worker_calc['optimal_workers'])
@@ -336,8 +336,8 @@ async def scrape_chatgpt_parallel(questions: List[str], num_workers: int = 5) ->
     # Don't use more workers than questions
     num_workers = min(num_workers, len(questions))
 
-    print(f"🔧 SETUP: {num_workers} workers, {len(questions)} questions")
-    print(f"📋 SESSION LIMIT: Max 3 questions per browser session (to avoid login issues)")
+    print(f"SETUP: {num_workers} workers, {len(questions)} questions")
+    print(f"SESSION LIMIT: Max 3 questions per browser session (to avoid login issues)")
 
     # Split questions among workers
     questions_per_worker = len(questions) // num_workers
@@ -352,7 +352,7 @@ async def scrape_chatgpt_parallel(questions: List[str], num_workers: int = 5) ->
 
         question_batches.append(questions[start_idx:end_idx])
 
-    print(f"📦 DISTRIBUTION: {[len(batch) for batch in question_batches]} questions per worker")
+    print(f"DISTRIBUTION: {[len(batch) for batch in question_batches]} questions per worker")
 
     # Run workers in parallel
     tasks = [
@@ -366,7 +366,7 @@ async def scrape_chatgpt_parallel(questions: List[str], num_workers: int = 5) ->
     all_results = []
     for worker_results in batch_results:
         if isinstance(worker_results, Exception):
-            print(f"❌ Worker failed: {worker_results}")
+            print(f"Worker failed: {worker_results}")
         else:
             all_results.extend(worker_results)
             # Add to metrics
@@ -389,7 +389,7 @@ async def main():
         "How do I fix a Python error: ModuleNotFoundError?",
         "Can you write a SQL query to find duplicate records in a table?",
         "How do I optimize a PostgreSQL database for faster queries?",
-        "What’s the difference between multithreading and multiprocessing in Python?",
+        "What's the difference between multithreading and multiprocessing in Python?",
         "Can you explain the difference between REST API and GraphQL?",
         "How do I deploy a .NET application in Docker?",
         "Can you write a Python script to scrape Amazon product titles?",
